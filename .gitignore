@@ -5,6 +5,9 @@
 .env.*
 !.env.example
 
+/package.json
+/package-lock.json
+
 # =========================
 # NODE
 # =========================
