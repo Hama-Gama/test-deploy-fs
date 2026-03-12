@@ -16,10 +16,12 @@ Next.js + NestJS + Prisma + PostgreSQL + Docker
 # Project structure
 
 ```
-frontend/   → Next.js application
-backend/    → NestJS API + Prisma
-docker-compose.dev.yml
-.env.example
+frontend/               Next.js application
+backend/                NestJS API + Prisma
+docker-compose.dev.yml  Development environment
+docker-compose.prod.yml Production environment
+.env.example            Environment variables example
+nginx.conf              Nginx config for production
 ```
 
 ---
@@ -36,7 +38,31 @@ cp .env.example .env
 
 ---
 
-## 2️⃣ Start development environment
+## 2️⃣ Install dependencies
+
+### Backend
+
+Run **from project root directory**:
+
+```bash
+cd backend
+npm install
+cd ..
+```
+
+### Frontend
+
+Run **from project root directory**:
+
+```bash
+cd frontend
+npm install
+cd ..
+```
+
+---
+
+## 3️⃣ Start development environment
 
 Run **from project root directory**:
 
@@ -44,9 +70,11 @@ Run **from project root directory**:
 docker compose -f docker-compose.dev.yml up --build
 ```
 
+First run may take **1–3 minutes** because Docker installs dependencies.
+
 ---
 
-## URLs
+# URLs
 
 Frontend
 
@@ -54,7 +82,7 @@ Frontend
 http://127.0.0.1:3000
 ```
 
-API
+Backend API
 
 ```
 http://127.0.0.1:8000/api
@@ -90,6 +118,46 @@ http://127.0.0.1:5555
 
 ---
 
+# Docker commands
+
+## Check containers status
+
+Run **from project root directory**:
+
+```bash
+docker compose -f docker-compose.dev.yml ps
+```
+
+---
+
+## View logs
+
+All services:
+
+```bash
+docker compose -f docker-compose.dev.yml logs -f
+```
+
+Frontend logs:
+
+```bash
+docker compose -f docker-compose.dev.yml logs -f frontend
+```
+
+Backend logs:
+
+```bash
+docker compose -f docker-compose.dev.yml logs -f backend
+```
+
+Database logs:
+
+```bash
+docker compose -f docker-compose.dev.yml logs -f db
+```
+
+---
+
 # Stop project
 
 Run **from project root directory**:
@@ -102,8 +170,24 @@ docker compose -f docker-compose.dev.yml down
 
 # Stop and remove database volume
 
-Run **from project root directory**:
+This resets the database.
 
 ```bash
 docker compose -f docker-compose.dev.yml down -v
+```
+
+---
+
+# Typical workflow
+
+```
+git clone <repo>
+cd <repo>
+cp .env.example .env
+
+cd backend && npm install
+cd ../frontend && npm install
+cd ..
+
+docker compose -f docker-compose.dev.yml up --build
 ```
